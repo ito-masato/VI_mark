@@ -44,13 +44,15 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btn_reset = new System.Windows.Forms.Button();
+            this.lbl_defcolor = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_selectimg
             // 
-            this.btn_selectimg.Location = new System.Drawing.Point(12, 42);
+            this.btn_selectimg.Location = new System.Drawing.Point(12, 37);
             this.btn_selectimg.Name = "btn_selectimg";
             this.btn_selectimg.Size = new System.Drawing.Size(62, 21);
             this.btn_selectimg.TabIndex = 1;
@@ -62,7 +64,7 @@
             // 
             this.btn_selectcolor1.BackColor = System.Drawing.Color.White;
             this.btn_selectcolor1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_selectcolor1.Location = new System.Drawing.Point(12, 69);
+            this.btn_selectcolor1.Location = new System.Drawing.Point(12, 64);
             this.btn_selectcolor1.Name = "btn_selectcolor1";
             this.btn_selectcolor1.Size = new System.Drawing.Size(62, 21);
             this.btn_selectcolor1.TabIndex = 2;
@@ -89,7 +91,7 @@
             this.btn_selectcolor2.BackColor = System.Drawing.Color.Blue;
             this.btn_selectcolor2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btn_selectcolor2.ForeColor = System.Drawing.Color.White;
-            this.btn_selectcolor2.Location = new System.Drawing.Point(12, 96);
+            this.btn_selectcolor2.Location = new System.Drawing.Point(12, 91);
             this.btn_selectcolor2.Name = "btn_selectcolor2";
             this.btn_selectcolor2.Size = new System.Drawing.Size(62, 21);
             this.btn_selectcolor2.TabIndex = 4;
@@ -116,7 +118,7 @@
             // btn_paint
             // 
             this.btn_paint.Enabled = false;
-            this.btn_paint.Location = new System.Drawing.Point(12, 123);
+            this.btn_paint.Location = new System.Drawing.Point(12, 118);
             this.btn_paint.Name = "btn_paint";
             this.btn_paint.Size = new System.Drawing.Size(62, 21);
             this.btn_paint.TabIndex = 9;
@@ -163,7 +165,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(1, 23);
+            this.groupBox1.Location = new System.Drawing.Point(2, 23);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(82, 133);
             this.groupBox1.TabIndex = 18;
@@ -173,7 +175,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.comboBox1);
-            this.groupBox2.Location = new System.Drawing.Point(1, 174);
+            this.groupBox2.Location = new System.Drawing.Point(3, 174);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(82, 130);
             this.groupBox2.TabIndex = 19;
@@ -193,11 +195,35 @@
             this.comboBox1.Size = new System.Drawing.Size(62, 20);
             this.comboBox1.TabIndex = 20;
             // 
+            // btn_reset
+            // 
+            this.btn_reset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_reset.Enabled = false;
+            this.btn_reset.Location = new System.Drawing.Point(12, 326);
+            this.btn_reset.Name = "btn_reset";
+            this.btn_reset.Size = new System.Drawing.Size(62, 21);
+            this.btn_reset.TabIndex = 20;
+            this.btn_reset.Text = "リセット";
+            this.btn_reset.UseVisualStyleBackColor = true;
+            this.btn_reset.Click += new System.EventHandler(this.btn_reset_Click);
+            // 
+            // lbl_defcolor
+            // 
+            this.lbl_defcolor.AutoSize = true;
+            this.lbl_defcolor.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lbl_defcolor.Location = new System.Drawing.Point(88, 3);
+            this.lbl_defcolor.Name = "lbl_defcolor";
+            this.lbl_defcolor.Size = new System.Drawing.Size(129, 17);
+            this.lbl_defcolor.TabIndex = 21;
+            this.lbl_defcolor.Text = "テンプレートの色指定：";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(689, 386);
+            this.Controls.Add(this.lbl_defcolor);
+            this.Controls.Add(this.btn_reset);
             this.Controls.Add(this.btn_txtdel);
             this.Controls.Add(this.btn_fontset);
             this.Controls.Add(this.textBox1);
@@ -210,7 +236,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(550, 380);
+            this.MinimumSize = new System.Drawing.Size(550, 410);
             this.Name = "Form1";
             this.Text = "VI マーク作成モックアップ";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -246,6 +272,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button btn_reset;
+        private System.Windows.Forms.Label lbl_defcolor;
     }
 }
 
