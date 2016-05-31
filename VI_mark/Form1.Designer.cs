@@ -36,21 +36,21 @@
             this.btn_selectcolor2 = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.pic_select1 = new System.Windows.Forms.PictureBox();
-            this.pic_select2 = new System.Windows.Forms.PictureBox();
             this.btn_paint = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.btn_fontset = new System.Windows.Forms.Button();
             this.btn_txtdel = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pic_select1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pic_select2)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_selectimg
             // 
-            this.btn_selectimg.Location = new System.Drawing.Point(12, 23);
+            this.btn_selectimg.Location = new System.Drawing.Point(12, 42);
             this.btn_selectimg.Name = "btn_selectimg";
             this.btn_selectimg.Size = new System.Drawing.Size(62, 21);
             this.btn_selectimg.TabIndex = 1;
@@ -60,12 +60,14 @@
             // 
             // btn_selectcolor1
             // 
-            this.btn_selectcolor1.Location = new System.Drawing.Point(12, 50);
+            this.btn_selectcolor1.BackColor = System.Drawing.Color.White;
+            this.btn_selectcolor1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_selectcolor1.Location = new System.Drawing.Point(12, 69);
             this.btn_selectcolor1.Name = "btn_selectcolor1";
             this.btn_selectcolor1.Size = new System.Drawing.Size(62, 21);
             this.btn_selectcolor1.TabIndex = 2;
-            this.btn_selectcolor1.Text = "色１選択";
-            this.btn_selectcolor1.UseVisualStyleBackColor = true;
+            this.btn_selectcolor1.Text = "色１";
+            this.btn_selectcolor1.UseVisualStyleBackColor = false;
             this.btn_selectcolor1.Click += new System.EventHandler(this.btn_selectcolor1_Click);
             // 
             // pictureBox1
@@ -84,17 +86,21 @@
             // 
             // btn_selectcolor2
             // 
-            this.btn_selectcolor2.Location = new System.Drawing.Point(12, 109);
+            this.btn_selectcolor2.BackColor = System.Drawing.Color.Blue;
+            this.btn_selectcolor2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_selectcolor2.ForeColor = System.Drawing.Color.White;
+            this.btn_selectcolor2.Location = new System.Drawing.Point(12, 96);
             this.btn_selectcolor2.Name = "btn_selectcolor2";
             this.btn_selectcolor2.Size = new System.Drawing.Size(62, 21);
             this.btn_selectcolor2.TabIndex = 4;
-            this.btn_selectcolor2.Text = "色２選択";
-            this.btn_selectcolor2.UseVisualStyleBackColor = true;
+            this.btn_selectcolor2.Text = "色２";
+            this.btn_selectcolor2.UseVisualStyleBackColor = false;
             this.btn_selectcolor2.Click += new System.EventHandler(this.btn_selectcolor2_Click);
             // 
             // btn_save
             // 
             this.btn_save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_save.Enabled = false;
             this.btn_save.Location = new System.Drawing.Point(12, 353);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(62, 21);
@@ -107,41 +113,26 @@
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
-            // pic_select1
-            // 
-            this.pic_select1.BackColor = System.Drawing.Color.White;
-            this.pic_select1.Location = new System.Drawing.Point(12, 77);
-            this.pic_select1.Name = "pic_select1";
-            this.pic_select1.Size = new System.Drawing.Size(62, 23);
-            this.pic_select1.TabIndex = 6;
-            this.pic_select1.TabStop = false;
-            // 
-            // pic_select2
-            // 
-            this.pic_select2.BackColor = System.Drawing.Color.Blue;
-            this.pic_select2.Location = new System.Drawing.Point(12, 136);
-            this.pic_select2.Name = "pic_select2";
-            this.pic_select2.Size = new System.Drawing.Size(62, 23);
-            this.pic_select2.TabIndex = 7;
-            this.pic_select2.TabStop = false;
-            // 
             // btn_paint
             // 
-            this.btn_paint.Location = new System.Drawing.Point(12, 165);
+            this.btn_paint.Enabled = false;
+            this.btn_paint.Location = new System.Drawing.Point(12, 123);
             this.btn_paint.Name = "btn_paint";
             this.btn_paint.Size = new System.Drawing.Size(62, 21);
             this.btn_paint.TabIndex = 9;
-            this.btn_paint.Text = "塗る";
+            this.btn_paint.Text = "塗るぽ";
             this.btn_paint.UseVisualStyleBackColor = true;
             this.btn_paint.Click += new System.EventHandler(this.btn_paint_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 271);
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(12, 222);
             this.textBox1.MaxLength = 10;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(62, 19);
             this.textBox1.TabIndex = 14;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // fontDialog1
             // 
@@ -150,23 +141,57 @@
             // 
             // btn_fontset
             // 
-            this.btn_fontset.Location = new System.Drawing.Point(12, 296);
+            this.btn_fontset.Enabled = false;
+            this.btn_fontset.Location = new System.Drawing.Point(12, 247);
             this.btn_fontset.Name = "btn_fontset";
             this.btn_fontset.Size = new System.Drawing.Size(62, 21);
             this.btn_fontset.TabIndex = 16;
-            this.btn_fontset.Text = "文字表示";
+            this.btn_fontset.Text = "表示";
             this.btn_fontset.UseVisualStyleBackColor = true;
             this.btn_fontset.Click += new System.EventHandler(this.btn_fontset_Click);
             // 
             // btn_txtdel
             // 
-            this.btn_txtdel.Location = new System.Drawing.Point(12, 323);
+            this.btn_txtdel.Enabled = false;
+            this.btn_txtdel.Location = new System.Drawing.Point(12, 274);
             this.btn_txtdel.Name = "btn_txtdel";
             this.btn_txtdel.Size = new System.Drawing.Size(62, 21);
             this.btn_txtdel.TabIndex = 17;
             this.btn_txtdel.Text = "消す";
             this.btn_txtdel.UseVisualStyleBackColor = true;
             this.btn_txtdel.Click += new System.EventHandler(this.btn_txtdel_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(1, 23);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(82, 133);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "描画";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.comboBox1);
+            this.groupBox2.Location = new System.Drawing.Point(1, 174);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(82, 130);
+            this.groupBox2.TabIndex = 19;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "文字入れ";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.Enabled = false;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "中央",
+            "下部"});
+            this.comboBox1.Location = new System.Drawing.Point(11, 22);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(62, 20);
+            this.comboBox1.TabIndex = 20;
             // 
             // Form1
             // 
@@ -177,21 +202,20 @@
             this.Controls.Add(this.btn_fontset);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn_paint);
-            this.Controls.Add(this.pic_select2);
-            this.Controls.Add(this.pic_select1);
             this.Controls.Add(this.btn_save);
             this.Controls.Add(this.btn_selectcolor2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btn_selectcolor1);
             this.Controls.Add(this.btn_selectimg);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(500, 300);
+            this.MinimumSize = new System.Drawing.Size(550, 380);
             this.Name = "Form1";
             this.Text = "VI マーク作成モックアップ";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pic_select1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pic_select2)).EndInit();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -206,8 +230,6 @@
         private System.Windows.Forms.Button btn_selectcolor2;
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.PictureBox pic_select1;
-        private System.Windows.Forms.PictureBox pic_select2;
         private System.Windows.Forms.Button btn_paint;
 
         private System.Drawing.Imaging.ColorMap[] cmr = 
@@ -221,6 +243,9 @@
 
         private System.Drawing.Bitmap canvas_bk = null;
         private System.Windows.Forms.Button btn_txtdel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

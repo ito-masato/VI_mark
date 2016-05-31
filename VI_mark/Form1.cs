@@ -53,16 +53,18 @@ namespace VI_mark
                 //表示する画像を設定する
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox1.ImageLocation = ofd.FileName;
-
-                // 画像を背景に指定する
-                //pictureBox1.BackgroundImage = Image.FromFile(ofd.FileName);
-                //pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
                     
                 // 色情報初期化
                 // default Color1:SkyBlue(135,206,235)
                 // default Color2:PowderBlue(176,224,230)
                 cmr[0].OldColor = global::VI_mark.Properties.Settings.Default.Color1;
                 cmr[1].OldColor = global::VI_mark.Properties.Settings.Default.Color2;
+
+                // ボタンを有効化
+                btn_paint.Enabled = true;
+                textBox1.Enabled = true;
+                btn_save.Enabled = true;
+                comboBox1.Enabled = true;
                 
             }
 
@@ -76,7 +78,7 @@ namespace VI_mark
         private void btn_selectcolor1_Click(object sender, EventArgs e)
         {
             //はじめに選択されている色を設定
-            colorDialog1.Color = pic_select1.BackColor;
+            colorDialog1.Color = btn_selectcolor1.BackColor;
             //色の作成部分を表示可能にする
             //デフォルトがTrueのため必要はない
             colorDialog1.AllowFullOpen = true;
@@ -94,7 +96,9 @@ namespace VI_mark
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 //選択された色の取得
-                pic_select1.BackColor = colorDialog1.Color;
+                //pic_select1.BackColor = colorDialog1.Color;
+                btn_selectcolor1.BackColor = colorDialog1.Color;
+                btn_selectcolor1.ForeColor = GetBlackorWhite(btn_selectcolor1.BackColor);
 
             }
         }
@@ -105,7 +109,7 @@ namespace VI_mark
         private void btn_selectcolor2_Click(object sender, EventArgs e)
         {
             //はじめに選択されている色を設定
-            colorDialog1.Color = pic_select2.BackColor;
+            colorDialog1.Color = btn_selectcolor2.BackColor;
             //色の作成部分を表示可能にする
             //デフォルトがTrueのため必要はない
             colorDialog1.AllowFullOpen = true;
@@ -123,8 +127,9 @@ namespace VI_mark
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 //選択された色の取得
-                pic_select2.BackColor = colorDialog1.Color;
-
+                //pic_select2.BackColor = colorDialog1.Color;
+                btn_selectcolor2.BackColor = colorDialog1.Color;
+                btn_selectcolor2.ForeColor = GetBlackorWhite(btn_selectcolor2.BackColor);
             }
         }
 
@@ -196,7 +201,7 @@ namespace VI_mark
         {
             try
             {
-                if(pic_select1.BackColor == pic_select2.BackColor){
+                if(btn_selectcolor1.BackColor == btn_selectcolor2.BackColor){
                     DialogResult result = MessageBox.Show(
                         "１色で塗り潰されます。" + Environment.NewLine + 
                         "２色で塗り分ける場合は、画像選択からテンプレートを選び直してください。",
@@ -223,13 +228,13 @@ namespace VI_mark
 
                 //SkyBlueを色１に変換する
                 cms[0].OldColor = cmr[0].OldColor;
-                cms[0].NewColor = pic_select1.BackColor;
+                cms[0].NewColor = btn_selectcolor1.BackColor;
                 //PowderBlueを色２に変換する
                 cms[1].OldColor = cmr[1].OldColor;
-                cms[1].NewColor = pic_select2.BackColor;
+                cms[1].NewColor = btn_selectcolor2.BackColor;
                 //色情報を保存
-                cmr[0].OldColor = pic_select1.BackColor;
-                cmr[1].OldColor = pic_select2.BackColor;
+                cmr[0].OldColor = btn_selectcolor1.BackColor;
+                cmr[1].OldColor = btn_selectcolor2.BackColor;
 
                 //ImageAttributesオブジェクトの作成
                 System.Drawing.Imaging.ImageAttributes ia =
@@ -261,30 +266,9 @@ namespace VI_mark
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            //InstalledFontCollectionオブジェクトの取得
-            //System.Drawing.Text.InstalledFontCollection ifc =
-            //    new System.Drawing.Text.InstalledFontCollection();
-            //インストールされているすべてのフォントファミリアを取得
-            //FontFamily[] ffs = ifc.Families;
-            /*FontFamily[] ffs = FontFamily.Families;
-
-            foreach (FontFamily ff in ffs)
-            {
-                //スタイルにRegularが使用できるフォントのみを表示
-                if (ff.IsStyleAvailable(FontStyle.Regular))
-                {
-                    //Fontオブジェクトを作成
-                    Font fnt = new Font(ff, 8);
-                    //フォントをコンボボックスに追加
-                    cbb_font.Items.Add(fnt.Name);
-                    cbb_font.SelectedItem = "ＭＳ ゴシック";
-                    //リソースを解放する
-                    fnt.Dispose();
-                }
-            }
-
-            cbb_fontsize.SelectedItem = "14";*/
+            btn_selectcolor1.ForeColor = GetBlackorWhite(btn_selectcolor1.BackColor);
+            btn_selectcolor2.ForeColor = GetBlackorWhite(btn_selectcolor2.BackColor);
+            comboBox1.SelectedIndex = 0;
 
         }
 
@@ -343,56 +327,88 @@ namespace VI_mark
             //ダイアログを表示する
             if (fd.ShowDialog() != DialogResult.Cancel)
             {
-
-                try
-                {
-                    //描画元のImageオブジェクトバックアップ
-                    canvas_bk = new Bitmap(pictureBox1.Image);
-                    //描画先とするImageオブジェクトを作成する
-                    Bitmap canvas = new Bitmap(pictureBox1.Image);
-                    //ImageオブジェクトのGraphicsオブジェクトを作成する
-                    Graphics g = Graphics.FromImage(canvas);
-
-                    //StringFormatオブジェクトの作成
-                    StringFormat sf = new StringFormat();
-
-                    //フォントオブジェクトの作成
-                    Font fnt = new Font(fd.Font.Name, fd.Font.Size);
-
-                    //幅の最大値をpitureBoxの幅(pixel)、文字列を描画するときの大きさを計測する
-                    //SizeF stringSize = g.MeasureString(textBox1.Text, fnt, pictureBox1.Width, sf);
-                    Size stringSize = TextRenderer.MeasureText(g, textBox1.Text, fnt,
-                         new Size(1000, 1000), TextFormatFlags.NoPadding);
-                    //取得した文字列の大きさを使って四角を描画する
-                    //g.DrawRectangle(Pens.Red, 
-                    //    (pictureBox1.Image.Width / 2) - (stringSize.Width / 2), 
-                    //    (pictureBox1.Image.Height / 2) - (stringSize.Height / 2), 
-                    //    stringSize.Width, stringSize.Height);
-
-                    //文字列を中心座標、選択した色で表示
-                    TextRenderer.DrawText(
-                        g, textBox1.Text, fnt,
-                        new Point((pictureBox1.Image.Width / 2) - (stringSize.Width / 2),
-                            (pictureBox1.Image.Height / 2) - (stringSize.Height / 2)),
-                        fd.Color, TextFormatFlags.NoPadding);
-
-                    //g.DrawString(textBox1.Text, fnt, Brushes.Red, 0, 0);
-
-                    //リソースを解放する
-                    fnt.Dispose();
-                    g.Dispose();
-
-                    //pictureBox1に表示する
-                    pictureBox1.Image = canvas;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "エラー");
-                }
+                // テキスト描画する
+                DrawingText(comboBox1.SelectedIndex,fd.Font,fd.Color);
                 
             }
         }
 
+
+        /// <summary>
+        /// 文字を描画する
+        /// </summary>
+        /// <param name="mode">書込みモード 0:中央 1:下部</param>
+        /// <param name="fd">フォント</param>
+        /// <param name="color">色</param>
+        private void DrawingText(int mode, Font fd, Color color)
+        {
+            if (comboBox1.SelectedIndex == 1)
+            {
+                MessageBox.Show("まだ作ってないよ (ゝω・)ﾃﾍﾍﾟﾛ", "Comming Soon!!");
+                return;
+            }
+            try
+            {
+                //描画元のImageオブジェクトバックアップ
+                canvas_bk = new Bitmap(pictureBox1.Image);
+                //描画先とするImageオブジェクトを作成する
+                Bitmap canvas = new Bitmap(pictureBox1.Image);
+                //ImageオブジェクトのGraphicsオブジェクトを作成する
+                Graphics g = Graphics.FromImage(canvas);
+
+                //StringFormatオブジェクトの作成
+                StringFormat sf = new StringFormat();
+
+                //フォントオブジェクトの作成
+                Font fnt = new Font(fd.Name, fd.Size);
+
+                //(高品質で低速なレンダリング)を指定する
+                g.SmoothingMode = SmoothingMode.HighQuality;
+
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+
+                //幅の最大値をpitureBoxの幅(pixel)、文字列を描画するときの大きさを計測する
+                //SizeF stringSize = g.MeasureString(textBox1.Text, fnt, pictureBox1.Width, sf);
+                Size stringSize = TextRenderer.MeasureText(g, textBox1.Text, fnt,
+                     new Size(1000, 1000), TextFormatFlags.NoPadding);
+                //取得した文字列の大きさを使って四角を描画する
+                //g.DrawRectangle(Pens.Red, 
+                //    (pictureBox1.Image.Width / 2) - (stringSize.Width / 2), 
+                //    (pictureBox1.Image.Height / 2) - (stringSize.Height / 2), 
+                //    stringSize.Width, stringSize.Height);
+
+                //文字列を中心座標、選択した色で表示
+                TextRenderer.DrawText(
+                    g, textBox1.Text, fnt,
+                    new Point((pictureBox1.Image.Width / 2) - (stringSize.Width / 2),
+                        (pictureBox1.Image.Height / 2) - (stringSize.Height / 2)),
+                    color, TextFormatFlags.NoPadding);
+
+                //g.DrawString(textBox1.Text, fnt, Brushes.Red, 0, 0);
+
+                //リソースを解放する
+                fnt.Dispose();
+                g.Dispose();
+
+                //pictureBox1に表示する
+                pictureBox1.Image = canvas;
+
+                // 消すボタン有効化
+                btn_txtdel.Enabled = true;
+
+                // 表示ボタン無効化
+                btn_fontset.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "エラー");
+            }
+
+        }
+
+        /// <summary>
+        /// 文字を消す
+        /// </summary>
         private void btn_txtdel_Click(object sender, EventArgs e)
         {
             try
@@ -406,6 +422,12 @@ namespace VI_mark
                 //リソースを解放する
                 g.Dispose();
                 canvas_bk= null;
+
+                //消すボタン無効化
+                btn_txtdel.Enabled = false;
+
+                // 表示ボタン有効化
+                btn_fontset.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -413,7 +435,69 @@ namespace VI_mark
             }
         }
 
+        private void pic_select1_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        /// <summary>
+        /// 補色を取得する
+        /// </summary>
+        /// <param name="color">Color</param>
+        /// <returns>補色のColorオブジェクト</returns>
+        private Color GetComplementaryColor(Color color)
+        {
+            byte r = (byte)~color.R;
+            byte g = (byte)~color.G;
+            byte b = (byte)~color.B;
+
+            return Color.FromArgb(r, g, b);
+        }
+
+        /// <summary>
+        /// 白か黒を返す
+        /// </summary>
+        /// <param name="color">Color</param>
+        /// <returns>白か黒のColorオブジェクト</returns>
+        private Color GetBlackorWhite(Color color)
+        {
+            byte r = (byte)color.R;
+            byte g = (byte)color.G;
+            byte b = (byte)color.B;
+
+            if (r > 127 && g > 127 && b > 127)
+            {
+                return Color.Black;
+            }
+            else if (r > 127 || g > 127 || b > 127)
+            {
+                return Color.White;
+            }
+            else if (r < 127 && g < 127 && b < 127)
+            {
+                return Color.White;
+            }
+
+            else
+            {
+                return Color.Black;
+            }
+
+            //return Color.FromArgb(r, g, b);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox1.Text.Length > 0)
+            {
+                btn_fontset.Enabled = true;
+            }
+            else
+            {
+                btn_fontset.Enabled = false;
+            }
+
+        }
 
 
     }
