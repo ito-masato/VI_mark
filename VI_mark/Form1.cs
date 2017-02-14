@@ -48,11 +48,27 @@ namespace VI_mark
             //ダイアログを表示する
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                // OKボタンがクリックされたとき
+                
+                // 画像の大きさチェック
+                Bitmap bmpOrg = Bitmap.FromFile(ofd.FileName) as Bitmap;
+                if (bmpOrg.Width != global::VI_mark.Properties.Settings.Default.Width ||
+                    bmpOrg.Height < global::VI_mark.Properties.Settings.Default.Height)
+                {
+                    MessageBox.Show(
+                    "幅" + global::VI_mark.Properties.Settings.Default.Width + "pixelジャスト" + Environment.NewLine +
+                    "高さ" + global::VI_mark.Properties.Settings.Default.Height + "pixel以上" + Environment.NewLine +
+                    "の画像でないとイヤです"
+                    , "警告");
+
+                    bmpOrg.Dispose();
+                    return;
+                }
+
                 // 画像パスを格納する
                 //表示する画像を設定する
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox1.ImageLocation = ofd.FileName;
+
                     
                 // 色情報初期化
                 // default Color1:SkyBlue(135,206,235)
@@ -66,11 +82,25 @@ namespace VI_mark
                 btn_save.Enabled = true;
                 btn_reset.Enabled = true;
                 comboBox1.Enabled = true;
+
+                // リソース解放
+                bmpOrg.Dispose();
                 
             }
 
             //コントロールを再描画する。
             pictureBox1.Invalidate();
+
+            /*if (pictureBox1.Image.Width != global::VI_mark.Properties.Settings.Default.Width ||
+            pictureBox1.Image.Height != global::VI_mark.Properties.Settings.Default.Height)
+            {
+                MessageBox.Show(
+                "幅" + global::VI_mark.Properties.Settings.Default.Width + "pixel" + Environment.NewLine +
+                "高さ" + global::VI_mark.Properties.Settings.Default.Height + "pixel" + Environment.NewLine +
+                "の画像でないとイヤです"
+                , "警告");
+                return;
+            }*/
         }
 
         /// <summary>
@@ -312,38 +342,45 @@ namespace VI_mark
         /// </summary>
         private void btn_fontset_Click(object sender, EventArgs e)
         {
-            //FontDialogクラスのインスタンスを作成
-            FontDialog fd = new FontDialog();
-
-            //初期のフォントを設定
-            fd.Font = textBox1.Font;
-            //初期の色を設定
-            fd.Color = textBox1.ForeColor;
-            //ユーザーが選択できるポイントサイズの最大値を設定する
-            fd.MaxSize = 500;
-            fd.MinSize = 18;
-            //存在しないフォントやスタイルをユーザーが選択すると
-            //エラーメッセージを表示する
-            fd.FontMustExist = true;
-            //横書きフォントだけを表示する
-            fd.AllowVerticalFonts = false;
-            //色を選択できるようにする
-            fd.ShowColor = true;
-            //取り消し線、下線、テキストの色などのオプションを指定不可にする
-            fd.ShowEffects = true;
-            //固定ピッチフォント以外も表示する
-            //デフォルトがFalseのため必要はない
-            fd.FixedPitchOnly = false;
-            //ベクタ フォントを選択できるようにする
-            //デフォルトがTrueのため必要はない
-            fd.AllowVectorFonts = true;
-
-            //ダイアログを表示する
-            if (fd.ShowDialog() != DialogResult.Cancel)
+            try
             {
-                // テキスト描画する
-                DrawingText(comboBox1.SelectedIndex,fd.Font,fd.Color);
-                
+                //FontDialogクラスのインスタンスを作成
+                FontDialog fd = new FontDialog();
+
+                //初期のフォントを設定
+                fd.Font = textBox1.Font;
+                //初期の色を設定
+                fd.Color = textBox1.ForeColor;
+                //ユーザーが選択できるポイントサイズの最大値を設定する
+                fd.MaxSize = 500;
+                fd.MinSize = 18;
+                //存在しないフォントやスタイルをユーザーが選択すると
+                //エラーメッセージを表示する
+                fd.FontMustExist = true;
+                //横書きフォントだけを表示する
+                fd.AllowVerticalFonts = false;
+                //色を選択できるようにする
+                fd.ShowColor = true;
+                //取り消し線、下線、テキストの色などのオプションを指定不可にする
+                fd.ShowEffects = true;
+                //固定ピッチフォント以外も表示する
+                //デフォルトがFalseのため必要はない
+                fd.FixedPitchOnly = false;
+                //ベクタ フォントを選択できるようにする
+                //デフォルトがTrueのため必要はない
+                fd.AllowVectorFonts = true;
+
+                //ダイアログを表示する
+                if (fd.ShowDialog() != DialogResult.Cancel)
+                {
+                    // テキスト描画する
+                    DrawingText(comboBox1.SelectedIndex, fd.Font, fd.Color);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "エラー");
             }
         }
 
@@ -356,22 +393,24 @@ namespace VI_mark
         /// <param name="color">色</param>
         private void DrawingText(int mode, Font fd, Color color)
         {
-            if (comboBox1.SelectedIndex == 1)
+            /*if (mode == 1)
             {
                 MessageBox.Show("まだ作ってないよ (ゝω・)ﾃﾍﾍﾟﾛ", "Comming Soon!!");
                 return;
-            }
+            }*/
+            
             try
             {
                 //描画元のImageオブジェクトバックアップ
                 canvas_bk = new Bitmap(pictureBox1.Image);
                 //描画先とするImageオブジェクトを作成する
                 Bitmap canvas = new Bitmap(pictureBox1.Image);
+                //Bitmap canvas = mode == 0 ? new Bitmap(pictureBox1.Image) : new Bitmap(pictureBox1.Image,pictureBox1.Image.Width, pictureBox1.Image.Height + 500);
                 //ImageオブジェクトのGraphicsオブジェクトを作成する
                 Graphics g = Graphics.FromImage(canvas);
 
                 //StringFormatオブジェクトの作成
-                StringFormat sf = new StringFormat();
+                //StringFormat sf = new StringFormat();
 
                 //フォントオブジェクトの作成
                 Font fnt = new Font(fd.Name, fd.Size);
@@ -385,19 +424,41 @@ namespace VI_mark
                 //SizeF stringSize = g.MeasureString(textBox1.Text, fnt, pictureBox1.Width, sf);
                 Size stringSize = TextRenderer.MeasureText(g, textBox1.Text, fnt,
                      new Size(1000, 1000), TextFormatFlags.NoPadding);
-                //取得した文字列の大きさを使って四角を描画する
-                //g.DrawRectangle(Pens.Red, 
-                //    (pictureBox1.Image.Width / 2) - (stringSize.Width / 2), 
-                //    (pictureBox1.Image.Height / 2) - (stringSize.Height / 2), 
-                //    stringSize.Width, stringSize.Height);
 
-                //文字列を中心座標、選択した色で表示
-                TextRenderer.DrawText(
-                    g, textBox1.Text, fnt,
-                    new Point((pictureBox1.Image.Width / 2) - (stringSize.Width / 2),
-                        (pictureBox1.Image.Height / 2) - (stringSize.Height / 2)),
-                    color, TextFormatFlags.NoPadding);
-                //g.DrawString(textBox1.Text, fnt, Brushes.Red, 0, 0);
+                //書込みモード 0:中央部
+                if (mode == 0)
+                {
+                    //取得した文字列の大きさを使って四角を描画する
+                    //g.DrawRectangle(Pens.Red, 
+                    //    (pictureBox1.Image.Width / 2) - (stringSize.Width / 2), 
+                    //    (pictureBox1.Image.Height / 2) - (stringSize.Height / 2), 
+                    //    stringSize.Width, stringSize.Height);
+
+                    //文字列を中心座標、選択した色で表示
+                    TextRenderer.DrawText(
+                        g, textBox1.Text, fnt,
+                        new Point((pictureBox1.Image.Width / 2) - (stringSize.Width / 2),
+                            (pictureBox1.Image.Height / 2) - (stringSize.Height / 2)),
+                        color, TextFormatFlags.NoPadding);
+                    //g.DrawString(textBox1.Text, fnt, Brushes.Red, 0, 0);
+                }
+                //書込みモード 1:下部
+                else if (mode == 1)
+                {
+                    //取得した文字列の大きさを使って四角を描画する
+                    //g.DrawRectangle(Pens.Red, 
+                    //    (pictureBox1.Image.Width / 2) - (stringSize.Width / 2),
+                    //    global::VI_mark.Properties.Settings.Default.Height,
+                    //    stringSize.Width, stringSize.Height);
+                    
+                    //文字列を下部座標、選択した色で表示
+                    TextRenderer.DrawText(
+                        g, textBox1.Text, fnt,
+                        new Point((pictureBox1.Image.Width / 2) - (stringSize.Width / 2),
+                            global::VI_mark.Properties.Settings.Default.Height),
+                        color, TextFormatFlags.NoPadding);
+                    //g.DrawString(textBox1.Text, fnt, Brushes.Red, 0, 0);
+                }
 
                 //リソースを解放する
                 fnt.Dispose();

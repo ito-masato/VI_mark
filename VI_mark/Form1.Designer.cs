@@ -210,10 +210,10 @@
             // lbl_defcolor
             // 
             this.lbl_defcolor.AutoSize = true;
-            this.lbl_defcolor.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lbl_defcolor.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lbl_defcolor.Location = new System.Drawing.Point(88, 3);
             this.lbl_defcolor.Name = "lbl_defcolor";
-            this.lbl_defcolor.Size = new System.Drawing.Size(129, 17);
+            this.lbl_defcolor.Size = new System.Drawing.Size(109, 14);
             this.lbl_defcolor.TabIndex = 21;
             this.lbl_defcolor.Text = "テンプレートの色指定：";
             // 
